@@ -32,7 +32,7 @@
 #include <iostream>
 #include <string>
 
-// the identity of the subscriber is the combination of container id
+// The identity of the subscriber is the combination of container id
 // and link (i.e. receiver) name
 //
 // - Set container id
@@ -42,7 +42,7 @@
 struct subscription_handler : public proton::messaging_handler {
     std::string conn_url_ {};
     std::string address_ {};
-    int count_ {1};
+    int count_ {0};
 
     int received_ {0};
     bool stopping_ {false};
@@ -55,7 +55,7 @@ struct subscription_handler : public proton::messaging_handler {
         proton::receiver_options opts {};
         proton::source_options sopts {};
 
-        opts.name("test-link");
+        opts.name("sub0"); // A stable name
         sopts.durability_mode(proton::source::UNSETTLED_STATE);
         sopts.expiry_policy(proton::source::NEVER);
         opts.source(sopts);
