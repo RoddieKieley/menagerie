@@ -56,6 +56,7 @@ struct subscription_handler : public proton::messaging_handler {
         proton::source_options sopts {};
 
         // opts.name("test-link"); // XXX Not yet available
+        opts.name("test-link");
         sopts.durability_mode(proton::source::UNSETTLED_STATE);
         sopts.expiry_policy(proton::source::NEVER);
         opts.source(sopts);
