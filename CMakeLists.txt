@@ -9,4 +9,5 @@ endif()
 
 find_library(QPID_PROTON_CPP qpid-proton-cpp)
 
+add_subdirectory(qpid-proton-cpp-multithreading-el6)
 add_subdirectory(qpid-proton-cpp-subscriptions)
