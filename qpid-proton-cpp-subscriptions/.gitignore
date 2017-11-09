@@ -1,1 +1,3 @@
-durable-subscription
+subscribe
+durable-subscribe
+shared-subscribe

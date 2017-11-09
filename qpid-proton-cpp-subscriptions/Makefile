@@ -1,5 +1,10 @@
-durable-subscription: durable-subscription.cpp
-	g++ -Os -g -std=c++11 -lqpid-proton-cpp durable-subscription.cpp -o durable-subscription
+SOURCES := subscribe.cpp durable-subscribe.cpp shared-subscribe.cpp
+TARGETS := ${SOURCES:%.cpp=%}
+
+build: ${TARGETS}
 
 clean:
-	rm -f durable-subscription
+	rm -f ${TARGETS}
+
+%: %.cpp
+	g++ -Os -g -std=c++11 -lqpid-proton-cpp $< -o $@
