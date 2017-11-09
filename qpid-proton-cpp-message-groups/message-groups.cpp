@@ -222,19 +222,23 @@ public:
         receiver_options ropts;
         
         source::filter_map sfm;
-        symbol k = "group-id";
-        value v = "groupB";
+        symbol k("group-id");
+        value v = std::string("groupB");
         sfm.put(k,v);
         
         sopts.filters(sfm);
         ropts.source(sopts);
+
+        //conn.open_receiver(address_, ropts);
         
-        conn.open_receiver(address_, ropts);
+        conn.open_receiver(address_, receiver_options().source(source_options().filters(sfm)));
     }
     
     void on_receiver_open(proton::receiver& rcv) override
     {
         std::cout << "on_receiver_open for address: " << address_ << std::endl;
+        proton::value actual_group_id = rcv.source().filters().get("group-id");
+        std::cout << "receiving messages with group-id: " << actual_group_id << std::endl;
     }
     
     void on_message(proton::delivery& dlv, proton::message& msg) override
