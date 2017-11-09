@@ -1,2 +1,6 @@
-add_executable(durable-subscription durable-subscription.cpp)
-target_link_libraries(durable-subscription ${QPID_PROTON_CPP})
+add_executable(durable-subscribe durable-subscribe.cpp)
+add_executable(shared-subscribe shared-subscribe.cpp)
+add_executable(subscribe subscribe.cpp)
+target_link_libraries(durable-subscribe ${QPID_PROTON_CPP})
+target_link_libraries(shared-subscribe ${QPID_PROTON_CPP})
+target_link_libraries(subscribe ${QPID_PROTON_CPP})
