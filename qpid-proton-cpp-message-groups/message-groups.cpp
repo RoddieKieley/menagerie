@@ -52,7 +52,7 @@ private:
         proton::codec::encoder enc(filter_value);
         enc << proton::codec::start::described()
             << proton::symbol("apache.org:selector-filter:string")
-            << proton::binary(selector_str) // needs to be string?
+            << proton::binary(selector_str) // to handle more than ascii string
             << proton::codec::finish();
         
         // In our case the map has one element
