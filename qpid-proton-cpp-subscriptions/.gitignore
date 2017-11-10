@@ -1,3 +1,4 @@
 subscribe
 durable-subscribe
 shared-subscribe
+durable-shared-subscribe

@@ -51,8 +51,10 @@ struct subscribe_handler : public proton::messaging_handler {
             "shared",
             "global" // Global means shared across clients (distinct container IDs)
         };
-        
+
         sopts.capabilities(caps);
+        sopts.durability_mode(proton::source::UNSETTLED_STATE);
+        sopts.expiry_policy(proton::source::NEVER);
 
         opts.name("sub-1"); // A stable link name
         opts.source(sopts);
@@ -70,7 +72,7 @@ struct subscribe_handler : public proton::messaging_handler {
         received_++;
 
         if (received_ == desired_) {
-            dlv.receiver().close();
+            dlv.receiver().detach(); // Detaching leaves the subscription intact
             dlv.connection().close();
         }
     }

@@ -34,10 +34,10 @@
 
 // The identity of the subscriber is the combination of container ID
 // and link name (in this case, receiver name).
-struct subscription_handler : public proton::messaging_handler {
+struct subscribe_handler : public proton::messaging_handler {
     std::string conn_url_ {};
     std::string address_ {};
-    int count_ {0};
+    int desired_ {0};
     int received_ {0};
 
     void on_container_start(proton::container& cont) override {
@@ -48,6 +48,9 @@ struct subscription_handler : public proton::messaging_handler {
         proton::receiver_options opts {};
         proton::source_options sopts {};
 
+        std::vector<proton::symbol> caps {"topic"};
+
+        sopts.capabilities(caps);
         sopts.durability_mode(proton::source::UNSETTLED_STATE);
         sopts.expiry_policy(proton::source::NEVER);
 
@@ -66,7 +69,7 @@ struct subscription_handler : public proton::messaging_handler {
 
         received_++;
 
-        if (received_ == count_) {
+        if (received_ == desired_) {
             dlv.receiver().detach(); // Detaching leaves the subscription intact
             dlv.connection().close();
         }
@@ -79,12 +82,12 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    subscription_handler handler {};
+    subscribe_handler handler {};
     handler.conn_url_ = argv[1];
     handler.address_ = argv[2];
 
     if (argc == 4) {
-        handler.count_ = std::stoi(argv[3]);
+        handler.desired_ = std::stoi(argv[3]);
     }
 
     proton::container cont {handler, "app-1"}; // A stable container ID

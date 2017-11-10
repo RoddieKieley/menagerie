@@ -1,4 +1,4 @@
-SOURCES := subscribe.cpp durable-subscribe.cpp shared-subscribe.cpp
+SOURCES := subscribe.cpp durable-subscribe.cpp shared-subscribe.cpp durable-shared-subscribe.cpp
 TARGETS := ${SOURCES:%.cpp=%}
 
 build: ${TARGETS}

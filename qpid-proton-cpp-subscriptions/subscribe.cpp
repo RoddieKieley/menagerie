@@ -25,7 +25,9 @@
 #include <proton/message.hpp>
 #include <proton/messaging_handler.hpp>
 #include <proton/receiver.hpp>
+#include <proton/receiver_options.hpp>
 #include <proton/source.hpp>
+#include <proton/source_options.hpp>
 
 #include <iostream>
 #include <string>
@@ -33,7 +35,7 @@
 struct subscribe_handler : public proton::messaging_handler {
     std::string conn_url_ {};
     std::string address_ {};
-    int count_ {0};
+    int desired_ {0};
     int received_ {0};
 
     void on_container_start(proton::container& cont) override {
@@ -41,7 +43,15 @@ struct subscribe_handler : public proton::messaging_handler {
     }
 
     void on_connection_open(proton::connection& conn) override {
-        conn.open_receiver(address_);
+        proton::receiver_options opts {};
+        proton::source_options sopts {};
+
+        std::vector<proton::symbol> caps {"topic"};
+
+        sopts.capabilities(caps);
+        opts.source(sopts);
+
+        conn.open_receiver(address_, opts);
     }
 
     void on_receiver_open(proton::receiver& rcv) override {
@@ -53,7 +63,7 @@ struct subscribe_handler : public proton::messaging_handler {
 
         received_++;
 
-        if (received_ == count_) {
+        if (received_ == desired_) {
             dlv.receiver().close();
             dlv.connection().close();
         }
@@ -71,7 +81,7 @@ int main(int argc, char** argv) {
     handler.address_ = argv[2];
 
     if (argc == 4) {
-        handler.count_ = std::stoi(argv[3]);
+        handler.desired_ = std::stoi(argv[3]);
     }
 
     proton::container cont {handler};
