@@ -1,2 +1,5 @@
-add_executable(message-groups receiver.cpp message-groups.cpp)
+set(HEADER_FILES receiver.hpp sender.hpp message-groups.hpp)
+set(SOURCE_FILES receiver.cpp sender.cpp message-groups.cpp)
+#add_executable(message-groups receiver.cpp sender.cpp message-groups.cpp)
+add_executable(message-groups ${HEADER_FILES} ${SOURCE_FILES})
 target_link_libraries(message-groups ${QPID_PROTON_CPP})
