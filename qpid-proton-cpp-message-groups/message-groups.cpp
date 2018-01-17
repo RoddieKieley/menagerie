@@ -72,13 +72,13 @@ void send_thread(sender& s, int n, bool use_message_grouping = false)
     
     generate_messages(messages, 8, group_id);
     s.send(messages);
-    OUT(std::cout << id << " sent " << n << std::endl);
+    OUT(std::cout << id << " sent " << 8 << std::endl);
     
     if (use_message_grouping)
         group_id = "groupB";
     generate_messages(messages, 8, group_id);
     s.send(messages);
-    OUT(std::cout << id << " sent " << n << std::endl);
+    OUT(std::cout << id << " sent " << 8 << std::endl);
 }
 
 // Receive messages till atomic remaining count is 0.
